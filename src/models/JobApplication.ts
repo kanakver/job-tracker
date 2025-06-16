@@ -3,47 +3,38 @@ import mongoose from 'mongoose';
 const jobApplicationSchema = new mongoose.Schema({
   company: {
     type: String,
-    required: [true, 'Company name is required'],
-    trim: true,
+    required: true,
+    trim: true
   },
   role: {
     type: String,
-    required: [true, 'Job role is required'],
-    trim: true,
+    required: true,
+    trim: true
   },
   status: {
     type: String,
+    required: true,
     enum: ['Applied', 'Interview', 'Offer', 'Rejected', 'Accepted'],
-    default: 'Applied',
+    default: 'Applied'
   },
   appliedDate: {
     type: Date,
-    required: [true, 'Applied date is required'],
-    default: Date.now,
+    required: true,
+    default: Date.now
   },
   notes: {
     type: String,
-    trim: true,
+    trim: true
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now,
-  },
+    required: true
+  }
+}, {
+  timestamps: true
 });
 
-// Update the updatedAt timestamp before saving
-jobApplicationSchema.pre('save', function(next) {
-  this.updatedAt = new Date();
-  next();
-});
+const JobApplication = mongoose.models.JobApplication || mongoose.model('JobApplication', jobApplicationSchema);
 
-export default mongoose.models.JobApplication || mongoose.model('JobApplication', jobApplicationSchema); 
+export default JobApplication; 
